@@ -10,9 +10,10 @@ export default function Basket(props) {
   //   0
   // );
   const taxPrice = itemsPrice * 0.14;
-  const shippingPrice = itemsPrice > 2000 ? 0 : 20;
+  // const shippingPrice = itemsPrice > 2000 ? 0 : 20;
   const priceOfAddOn = addOns.reduce((a, c) => a + c.qty * c.price, 0);
-  const totalPrice = itemsPrice + taxPrice + shippingPrice + priceOfAddOn;
+  const [distance, setDistance] = React.useState(0);
+  const totalPrice = itemsPrice + taxPrice + distance + priceOfAddOn;
   // console.log(addOnPrice);
 
   const onAddOn = (product) => {
@@ -112,6 +113,24 @@ export default function Basket(props) {
             ))}
             <hr></hr>
             <div className="row">
+              <div className="col-2">Distance</div>
+              <div className="col-2 text-right">
+                <select
+                  value={distance}
+                  onChange={(e) => {
+                    console.log(e.target.value);
+                    setDistance(parseFloat(e.target.value));
+                  }}
+                >
+                  <option value="0.00">Upto 5Km</option>
+                  <option value="15.00">5-8Km</option>
+                  <option value="25.00">9-15Km</option>
+                  <option value="40.00">Above 15Km</option>
+                </select>
+              </div>
+            </div>
+            <hr></hr>
+            <div className="row">
               <div className="col-2">Items Price</div>
               <div className="col-1 text-right">₹{itemsPrice.toFixed(2)}</div>
             </div>
@@ -126,7 +145,7 @@ export default function Basket(props) {
             <div className="row">
               <div className="col-2">Shipping Price</div>
               <div className="col-1 text-right">
-                ₹{shippingPrice.toFixed(2)}
+                {/* ₹{shippingPrice.toFixed(2)} */}₹{distance}
               </div>
             </div>
 

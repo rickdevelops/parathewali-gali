@@ -61,6 +61,9 @@ button.remove {
   background-color: #f04040;
   width: 1.5rem;
 }
+button.remove:disabled {
+  background-color: #c07878;
+}
 button.badge {
   background-color: #f04040;
   border: none;
