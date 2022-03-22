@@ -2,22 +2,17 @@ import React from "react";
 import dataAddOn from "../dataAddOn";
 
 export default function Basket(props) {
-  const { cartItems, onAdd, onRemove } = props;
+  const { cartItems, onAdd, onRemove, addOnIdsAvailable } = props;
   const itemsPrice = cartItems.reduce((a, c) => a + c.qty * c.price, 0);
   const [addOns, setAddOns] = React.useState([]);
-  // const addOnPrice = dataAddOn.products.reduce(
-  //   (a, c) => a + c.qty * c.price,
-  //   0
-  // );
-  const taxPrice = itemsPrice * 0.14;
-  // const shippingPrice = itemsPrice > 2000 ? 0 : 20;
   const priceOfAddOn = addOns.reduce((a, c) => a + c.qty * c.price, 0);
+  const taxPrice = (itemsPrice + priceOfAddOn) * 0.14;
   const [distance, setDistance] = React.useState(0);
-  const totalPrice = itemsPrice + taxPrice + distance + priceOfAddOn;
-  // console.log(addOnPrice);
-
+  const totalPrice =
+    itemsPrice + taxPrice + parseFloat(distance) + priceOfAddOn;
+  // console.log(cartItems, Array.isArray(addOnIdsAvailable));
   const onAddOn = (product) => {
-    console.log(product, addOns);
+    // console.log(product, addOns);
     const existAddOn = addOns.find((x) => x.id === product.id);
     if (existAddOn) {
       setAddOns(
@@ -91,35 +86,41 @@ export default function Basket(props) {
             <h3>Add Ons</h3>
             {dataAddOn.products.map((item) => (
               <div key={item.id} className="row">
-                <div className="col-2">{item.name}</div>
-                <div className="col-2">
-                  <button
-                    onClick={() => onRemoveAddOn(item)}
-                    disabled={findTheQuantityofAddOn(item) === 0}
-                    className="remove"
-                  >
-                    -
-                  </button>{" "}
-                  <button onClick={() => onAddOn(item)} className="add">
-                    +
-                  </button>
-                </div>
+                {addOnIdsAvailable.includes(parseInt(item.id)) ? (
+                  <>
+                    <div className="col-2">{item.name}</div>
+                    <div className="col-2">
+                      <button
+                        onClick={() => onRemoveAddOn(item)}
+                        disabled={findTheQuantityofAddOn(item) === 0}
+                        className="remove"
+                      >
+                        -
+                      </button>{" "}
+                      <button onClick={() => onAddOn(item)} className="add">
+                        +
+                      </button>
+                    </div>
 
-                <div className="col-2 text-right">
-                  {findTheQuantityofAddOn(item)} x ₹{item.price.toFixed(2)}
-                </div>
+                    <div className="col-2 text-right">
+                      {findTheQuantityofAddOn(item)} x ₹{item.price.toFixed(2)}
+                    </div>
+                  </>
+                ) : null}
               </div>
               // <>Hello</>
             ))}
             <hr></hr>
             <div className="row">
-              <div className="col-2">Distance</div>
-              <div className="col-2 text-right">
+              <div className="col-2">
+                <h3>Distance</h3>
+              </div>
+              <div className="col-2 text-right distance-dropdown">
                 <select
                   value={distance}
                   onChange={(e) => {
                     console.log(e.target.value);
-                    setDistance(parseFloat(e.target.value));
+                    setDistance(e.target.value);
                   }}
                 >
                   <option value="0.00">Upto 5Km</option>
@@ -144,11 +145,9 @@ export default function Basket(props) {
             </div>
             <div className="row">
               <div className="col-2">Shipping Price</div>
-              <div className="col-1 text-right">
-                {/* ₹{shippingPrice.toFixed(2)} */}₹{distance}
-              </div>
+              <div className="col-1 text-right">₹{distance}</div>
             </div>
-
+            <hr></hr>
             <div className="row">
               <div className="col-2">
                 <strong>Total Price</strong>

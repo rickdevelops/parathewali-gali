@@ -4,7 +4,7 @@ export default function Header(props) {
   return (
     <header className="block row center">
       <div>
-        <a href="#/">
+        <a href="#/" onClick={props.toggleCloseCartFromHeader}>
           <h1>Parathewali Shopping Stop</h1>
         </a>
       </div>

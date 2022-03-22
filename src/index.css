@@ -82,16 +82,17 @@ button.keep-shopping {
 .go-shopping {
   background-color: darkseagreen;
 }
-
+.distance-dropdown {
+  margin-top: 0.5rem;
+}
 @media screen and (max-width: 1050px) {
-  .row {
-    flex-direction: column;
-  }
   .col-1 {
     flex: 1;
+    margin: auto;
   }
   .col-2 {
     flex: 1;
+    margin: auto;
   }
   .block {
     margin: 0.5rem 0;
@@ -104,9 +105,10 @@ button.keep-shopping {
   }
   button {
     width: auto;
-    margin: 1rem;
+    /* margin: 1rem; */
   }
   .center-align-responsiveness {
     text-align: center;
+    flex-direction: column;
   }
 }
